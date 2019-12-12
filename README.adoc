@@ -1,0 +1,91 @@
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+== Twilio Spring Boot
+
+Twilio Spring Boot makes it easy to initialize the https://www.twilio.com/docs/libraries/java[Twilio Java SDK] using the same Spring Boot configuration idioms you are already used to.
+
+WARNING: This project requires Spring Boot 2.2.X and above.
+
+== Installation
+
+=== Gradle
+
+[source,gradle]
+----
+dependencies {
+    implementation("io.mateo:twilio-spring-boot-starter:1.0.0")
+}
+----
+
+[NOTE]
+====
+Use the `compile` configuration for older versions of Gradle.
+====
+
+=== Maven
+
+[source,xml]
+----
+<dependencies>
+    <dependency>
+        <groupId>io.mateo</groupId>
+        <artifactId>twilio-spring-boot-starter</artifactId>
+        <version>1.0.0</version>
+    </dependency>
+</dependencies>
+----
+
+== Configuration
+
+Configure your Twilio credentials using the following:
+
+IMPORTANT: Never hardcode your Twilio credentials: https://twil.io/secure
+
+.application.properties
+[source,properties]
+----
+twilio.credentials.account-sid=${TWILIO_ACCOUNT_SID}
+twilio.credentails.auth-token=${TWILIO_AUTH_TOKEN}
+----
+
+.application.yml
+[source,yaml]
+----
+twilio:
+  credentials:
+    account-sid: ${TWILIO_ACCOUNT_SID}
+    auth-token: ${TWILIO_AUTH_TOKEN}
+----
+
+If you need to override Twilio's `TwilioRestClient` or `ListeningExecutorService` then simply provide beans of those types:
+
+.MyConfiguration.java
+[source,java]
+----
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.twilio.http.TwilioRestClient;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration(proxyBeanMethods = false)
+public class MyConfiguration {
+
+    @Bean
+    public TwilioRestClient twilioRestClient() {
+        // ...
+    }
+
+    @Bean
+    public ListeningExecutorService listeningExecutorService() {
+        // ...
+    }
+}
+----
+
+Twilio Spring Boot automatically looks for those beans and apply them if they are present.
