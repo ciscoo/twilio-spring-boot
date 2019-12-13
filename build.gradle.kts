@@ -1,16 +1,10 @@
 import com.diffplug.gradle.spotless.SpotlessExtension
 import com.diffplug.gradle.spotless.SpotlessPlugin
-import com.jfrog.bintray.gradle.BintrayExtension
-import com.jfrog.bintray.gradle.BintrayExtension.PackageConfig
-import com.jfrog.bintray.gradle.BintrayExtension.VersionConfig
-import com.jfrog.bintray.gradle.BintrayPlugin
 import io.spring.javaformat.gradle.SpringJavaFormatPlugin
-import java.time.LocalDateTime
 import nebula.plugin.release.ReleasePlugin
 
 plugins {
     id("nebula.release") apply false
-    id("com.jfrog.bintray") apply false
     id("com.diffplug.gradle.spotless") apply false
     id("io.spring.javaformat") apply false
 }
@@ -42,6 +36,18 @@ allprojects {
         sourceCompatibility = JavaVersion.VERSION_1_8
     }
 
+    configure<PublishingExtension> {
+        repositories {
+            maven {
+                url = uri(property("publicationRepo") as String)
+                credentials {
+                    username = System.getenv("BINTRAY_USER")
+                    password = System.getenv("BINTRAY_KEY")
+                }
+            }
+        }
+    }
+
     group = "io.mateo"
 
     repositories {
@@ -65,35 +71,11 @@ allprojects {
 }
 
 subprojects {
-    apply {
-        plugin<BintrayPlugin>()
-    }
-
     configure<PublishingExtension> {
         publications {
             create<MavenPublication>("mavenJava") {
                 from(components["java"])
             }
         }
-    }
-
-    configure<BintrayExtension> {
-        user = System.getenv("BINTRAY_USER")
-        key = System.getenv("BINTRAY_KEY")
-        pkg(closureOf<PackageConfig> {
-            repo = "maven"
-            name = project.name
-            setLicenses("Apache-2.0")
-            vcsUrl = ""
-            setLabels("spring-boot", "twilio")
-            publicDownloadNumbers = true
-            version(closureOf<VersionConfig> {
-                name = project.version.toString()
-                desc = "Release - ${project.name} - ${project.version}"
-                vcsTag = project.version.toString()
-                released = LocalDateTime.now().toString()
-            })
-            setPublications("mavenJava")
-        })
     }
 }
