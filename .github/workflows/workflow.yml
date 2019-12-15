@@ -1,0 +1,49 @@
+name: Twilio Spring Boot CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        java: [8, 11.0.x]
+    name: Java ${{ matrix.java }} build
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+
+      - name: Display Java version
+        run: java -version
+
+      - name: Check project
+        run: ./gradlew check
+
+      - name: Build and test
+        run: ./gradlew build test
+  publish:
+    runs-on: ubuntu-18.04
+    needs: build
+    name: Publication
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11.0.x
+
+      - name: Daily snapshot publication
+        if: github.event_name == 'schedule'
+        run: ./gradlew build -x test snapshot publishToMavenLocal
+
