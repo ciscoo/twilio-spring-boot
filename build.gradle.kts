@@ -7,6 +7,7 @@ plugins {
     id("nebula.release") apply false
     id("com.diffplug.gradle.spotless") apply false
     id("io.spring.javaformat") apply false
+    id("io.mateo.release-plugin")
 }
 
 val license = file("src/spotless/apache-license-2.0.java")
