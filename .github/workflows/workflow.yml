@@ -50,3 +50,5 @@ jobs:
         env:
           RELEASE_SCOPE: ${{ github.event.client_payload.release_scope }}
           RELEASE_TYPE: ${{ github.event.client_payload.release_type }}
+          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
+          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
