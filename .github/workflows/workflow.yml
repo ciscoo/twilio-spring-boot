@@ -46,7 +46,7 @@ jobs:
       # https://github.community/t5/GitHub-Actions/GitHub-Actions-Manual-Trigger-Approvals/m-p/33361/highlight/true#M1475
       - name: Release publication
         if: github.event_name == 'repository_dispatch'
-        run: ./gradlew build -x test $RELEASE_TYPE -Prelease.scope=$RELEASE_SCOPE publish
+        run: ./gradlew build -x test $RELEASE_TYPE -Prelease.scope=$RELEASE_SCOPE publish --stacktrace
         env:
           RELEASE_SCOPE: ${{ github.event.client_payload.release_scope }}
           RELEASE_TYPE: ${{ github.event.client_payload.release_type }}
