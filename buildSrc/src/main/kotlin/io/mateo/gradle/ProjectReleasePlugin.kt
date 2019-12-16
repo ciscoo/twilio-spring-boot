@@ -5,10 +5,12 @@ import com.google.gson.annotations.SerializedName
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import java.net.URI
-import java.net.http.HttpClient
-import java.net.http.HttpRequest
-import java.net.http.HttpResponse
+import io.ktor.client.*
+import io.ktor.client.engine.apache.*
+import io.ktor.client.request.*
+import io.ktor.http.*
+import io.ktor.http.HttpMethod
+import kotlinx.coroutines.*
 
 data class ClientPayload(
         @SerializedName("release_type") val releaseType: String,
@@ -36,25 +38,28 @@ class ProjectReleasePlugin : Plugin<Project> {
                     releaseScope = "minor"
                 }
 
-                val requestBody = DispatchEvent("release-dispatch", ClientPayload(releaseType, releaseScope))
-                val json = Gson().toJson(requestBody)
+                runBlocking {
+                    val statusCode = HttpClient(Apache).use { client ->
+                        client.post<HttpStatusCode> {
+                            url(project.property("dispatchURI") as String)
+                            method = HttpMethod.Post
+                            body = Gson().toJson(DispatchEvent("release-dispatch", ClientPayload(releaseType, releaseScope)))
+                            headers {
+                                append("Authorization", "token ${System.getenv("TOKEN")}")
+                                appendAll("Accept", listOf(
+                                        "7application/vnd.github.v3+json",
+                                        "application/vnd.github.everest-preview+json"
+                                ))
+                            }
+                        }
+                    }
 
-                val client = HttpClient.newHttpClient()
-                val request = HttpRequest.newBuilder()
-                        .uri(URI.create(project.property("dispatchURI") as String))
-                        .header("Authorization", "token ${System.getenv("TOKEN")}")
-                        .header("Accept", "application/vnd.github.v3+json")
-                        .header("Accept", "application/vnd.github.everest-preview+json")
-                        .POST(HttpRequest.BodyPublishers.ofString(json))
-                        .build()
+                    if (statusCode.value in 400..599) {
+                        throw GradleException("Error dispatching release event: ${statusCode.description}")
+                    }
 
-                val response = client.send(request, HttpResponse.BodyHandlers.ofString())
-
-                if (response.statusCode() in 400..599) {
-                    throw GradleException("Error dispatching release event: ${response.body()}")
+                    println("Successfully dispatched release event.")
                 }
-
-                println("Successfully dispatched release event: $json")
             }
         }
     }
