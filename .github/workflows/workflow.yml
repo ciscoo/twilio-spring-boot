@@ -6,8 +6,6 @@ on:
       - master
   pull_request:
   repository_dispatch:
-  schedule:
-    - cron: "0 0 * * *"
 
 jobs:
   build:
@@ -44,15 +42,11 @@ jobs:
         with:
           java-version: 11.0.x
 
-      - name: Daily snapshot publication
-        if: github.event_name == 'schedule'
-        run: ./gradlew build -x test snapshot publishToMavenLocal
-      
       # Workaround until GitHub provides functionality to manually trigger actions
       # https://github.community/t5/GitHub-Actions/GitHub-Actions-Manual-Trigger-Approvals/m-p/33361/highlight/true#M1475
       - name: Release publication
         if: github.event_name == 'repository_dispatch'
-        run: ./gradlew build -x test $RELEASE_TYPE -Prelease.scope=$RELEASE_SCOPE publishToMavenLocal
+        run: ./gradlew build -x test $RELEASE_TYPE -Prelease.scope=$RELEASE_SCOPE publish
         env:
           RELEASE_SCOPE: ${{ github.event.client_payload.release_scope }}
           RELEASE_TYPE: ${{ github.event.client_payload.release_type }}
