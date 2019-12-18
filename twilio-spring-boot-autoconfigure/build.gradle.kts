@@ -2,6 +2,8 @@ plugins {
     jacoco
 }
 
+description = "Twilio Spring Boot Auto-Configure"
+
 dependencies {
     implementation("org.springframework.boot:spring-boot")
     implementation("org.springframework.boot:spring-boot-autoconfigure")

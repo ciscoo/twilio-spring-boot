@@ -83,6 +83,36 @@ subprojects {
         publications {
             create<MavenPublication>("mavenJava") {
                 from(components["java"])
+                pom {
+                    val mavenPom = this
+                    afterEvaluate {
+                        mavenPom.name.set(description)
+                        mavenPom.description.set(description)
+                    }
+                    licenses {
+                        license {
+                            name.set("Apache License, Version 2.0")
+                            url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                        }
+                    }
+                    scm {
+                        connection.set("scm:git:github.com/twilio-spring-boot.git")
+                        developerConnection.set("scm:git:ssh://github.com/twilio-spring-boot.git")
+                        url.set("https://github.com/ciscoo/twilio-spring-boot")
+                    }
+                    issueManagement {
+                        system.set("GitHub")
+                        url.set("https://github.com/ciscoo/twilio-spring-boot/issues")
+                    }
+                }
+                versionMapping {
+                    usage("java-api") {
+                        fromResolutionResult()
+                    }
+                    usage("java-runtime") {
+                        fromResolutionResult()
+                    }
+                }
             }
         }
     }
