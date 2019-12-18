@@ -57,7 +57,7 @@ allprojects {
         jcenter()
     }
 
-    ext["springBootVersion"] = "2.2.1.RELEASE"
+    ext["springBootVersion"] = "2.2.2.RELEASE"
     ext["twilioVersion"] = "7.42.0"
 
     dependencies {
