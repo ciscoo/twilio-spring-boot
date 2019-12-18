@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 import com.diffplug.gradle.spotless.SpotlessExtension
 import com.diffplug.gradle.spotless.SpotlessPlugin
 import io.spring.javaformat.gradle.SpringJavaFormatPlugin
@@ -72,6 +74,11 @@ allprojects {
 }
 
 subprojects {
+    configure<JavaPluginExtension> {
+        withSourcesJar()
+        withJavadocJar()
+    }
+
     configure<PublishingExtension> {
         publications {
             create<MavenPublication>("mavenJava") {
