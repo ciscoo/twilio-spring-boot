@@ -30,15 +30,13 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
 
 /**
- * {@link ApplicationContextInitializer} for configuring the {@link Twilio}
- * singleton.
+ * {@link ApplicationContextInitializer} for configuring the {@link Twilio} singleton.
  *
  * @author Francisco Mateo
  * @since 1.0.0
  */
 public class TwilioApplicationContextInitializer
-		implements
-			ApplicationContextInitializer<ConfigurableApplicationContext> {
+		implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
 	private static final Log logger = LogFactory.getLog(TwilioApplicationContextInitializer.class);
 
@@ -57,7 +55,8 @@ public class TwilioApplicationContextInitializer
 
 			try {
 				Twilio.init(credentials.getAccountSid(), credentials.getAuthToken());
-			} catch (TwilioException e) {
+			}
+			catch (TwilioException e) {
 				if (logger.isWarnEnabled()) {
 					logger.warn("Failed to initialize the Twilio environment", e);
 				}

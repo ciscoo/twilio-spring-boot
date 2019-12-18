@@ -22,8 +22,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  *
  * @author Francisco Mateo
  * @since 1.0.0
- * @see <a href="https://twil.io/secure">Store Your Twilio Credentials
- *      Securely</a>
+ * @see <a href="https://twil.io/secure">Store Your Twilio Credentials Securely</a>
  */
 @ConfigurationProperties("twilio.credentials")
 public class TwilioCredentialsProperties {

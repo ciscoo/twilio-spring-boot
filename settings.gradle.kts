@@ -7,7 +7,7 @@ pluginManagement {
     resolutionStrategy {
         eachPlugin {
             if (requested.id.id == "io.spring.javaformat") {
-                useModule("io.spring.javaformat:spring-javaformat-gradle-plugin:0.0.17")
+                useModule("io.spring.javaformat:spring-javaformat-gradle-plugin:0.0.15")
             }
         }
     }
