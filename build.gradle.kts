@@ -42,10 +42,14 @@ allprojects {
     configure<PublishingExtension> {
         repositories {
             maven {
-                url = uri(property("publicationRepo") as String)
+                url = if (project.version.toString().endsWith("SNAPSHOT")) {
+                    uri("https://oss.sonatype.org/content/repositories/snapshots")
+                } else {
+                    uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+                }
                 credentials {
-                    username = System.getenv("BINTRAY_USER")
-                    password = System.getenv("BINTRAY_KEY")
+                    username = System.getenv("OSSRH_USER_TOKEN")
+                    password = System.getenv("OSSRH_PWD_TOKEN")
                 }
             }
         }
