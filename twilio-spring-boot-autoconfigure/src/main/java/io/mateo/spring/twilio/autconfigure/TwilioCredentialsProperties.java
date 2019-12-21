@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.mateo.boot.twilio.autconfigure;
+package io.mateo.spring.twilio.autconfigure;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

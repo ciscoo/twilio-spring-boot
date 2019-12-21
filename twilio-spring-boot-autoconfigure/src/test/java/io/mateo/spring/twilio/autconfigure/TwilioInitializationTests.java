@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.mateo.boot.twilio.autconfigure;
+package io.mateo.spring.twilio.autconfigure;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mockingDetails;
@@ -21,8 +21,8 @@ import static org.mockito.Mockito.mockingDetails;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.twilio.Twilio;
 import com.twilio.http.TwilioRestClient;
-import io.mateo.boot.twilio.autconfigure.TwilioAutoConfiguration;
-import io.mateo.boot.twilio.autconfigure.TwilioCredentialsProperties;
+import io.mateo.spring.twilio.autconfigure.TwilioAutoConfiguration;
+import io.mateo.spring.twilio.autconfigure.TwilioCredentialsProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

@@ -1,5 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-io.mateo.boot.twilio.autconfigure.TwilioAutoConfiguration
+io.mateo.spring.twilio.autconfigure.TwilioAutoConfiguration
 
 org.springframework.context.ApplicationContextInitializer=\
-io.mateo.sb.twilio.TwilioApplicationContextInitializer
+io.mateo.spring.twilio.autconfigure.TwilioApplicationContextInitializer
