@@ -10,8 +10,6 @@ endif::[]
 
 Twilio Spring Boot makes it easy to initialize the https://www.twilio.com/docs/libraries/java[Twilio Java SDK] using the same Spring Boot configuration idioms you are already used to.
 
-WARNING: This project requires Spring Boot 2.2.X and above.
-
 == Installation
 
 === Gradle
