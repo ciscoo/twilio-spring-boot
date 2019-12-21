@@ -51,7 +51,7 @@ allprojects {
         }
     }
 
-    group = "io.mateo"
+    group = "io.mateo.spring"
 
     repositories {
         jcenter()
