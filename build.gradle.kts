@@ -78,6 +78,10 @@ allprojects {
 }
 
 subprojects {
+    apply {
+        plugin<SigningPlugin>()
+    }
+
     configure<JavaPluginExtension> {
         withSourcesJar()
         withJavadocJar()
@@ -126,5 +130,15 @@ subprojects {
                 }
             }
         }
+    }
+
+    // https://discuss.gradle.org/t/unable-to-publish-artifact-to-mavencentral/33727/3
+    tasks.withType<GenerateModuleMetadata> {
+        enabled = false
+    }
+
+    configure<SigningExtension> {
+        isRequired = !project.version.toString().endsWith("SNAPSHOT")
+        sign(project.extensions.getByType(PublishingExtension::class.java).publications["mavenJava"])
     }
 }
