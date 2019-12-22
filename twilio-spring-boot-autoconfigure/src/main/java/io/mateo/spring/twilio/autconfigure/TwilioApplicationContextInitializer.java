@@ -56,7 +56,7 @@ public class TwilioApplicationContextInitializer
 
 			if (StringUtils.isAnyBlank(credentials.getAccountSid(), credentials.getAuthToken())) {
 				if (logger.isWarnEnabled()) {
-					logger.warn("account-id or auth-token is blank");
+					logger.warn("Twilio account-id or auth-token is blank");
 				}
 				return;
 			}
