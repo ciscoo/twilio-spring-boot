@@ -21,6 +21,7 @@ import com.twilio.exception.TwilioException;
 import com.twilio.http.TwilioRestClient;
 import java.util.function.Consumer;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
@@ -52,6 +53,13 @@ public class TwilioApplicationContextInitializer
 			ApplicationContext context = event.getApplicationContext();
 
 			TwilioCredentialsProperties credentials = context.getBean(TwilioCredentialsProperties.class);
+
+			if (StringUtils.isAnyBlank(credentials.getAccountSid(), credentials.getAuthToken())) {
+				if (logger.isWarnEnabled()) {
+					logger.warn("account-id or auth-token is blank");
+				}
+				return;
+			}
 
 			try {
 				Twilio.init(credentials.getAccountSid(), credentials.getAuthToken());
